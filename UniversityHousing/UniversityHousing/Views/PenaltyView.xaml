@@ -1,0 +1,27 @@
+﻿<UserControl x:Class="UniversityHousing.Views.PenaltyView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="clr-namespace:UniversityHousing.ViewModels"
+        xmlns:local="clr-namespace:UniversityHousing.Views"
+        mc:Ignorable="d"
+        Height="550" Width="800">
+
+    <UserControl.DataContext>
+        <vm:PenaltyViewModel />
+    </UserControl.DataContext>
+
+    <Grid>
+        <ListView ItemsSource="{Binding Penalties}" SelectedItem="{Binding SelectedPenalty}">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Student CNP" DisplayMemberBinding="{Binding Student.CNP}" Width="120"/>
+                    <GridViewColumn Header="Penalty Amount" DisplayMemberBinding="{Binding PenaltyAmount}" Width="120"/>
+                    <GridViewColumn Header="Reason" DisplayMemberBinding="{Binding Reason}" Width="250"/>
+                    <GridViewColumn Header="Date" DisplayMemberBinding="{Binding Date}" Width="120"/>
+                </GridView>
+            </ListView.View>
+        </ListView>
+    </Grid>
+</UserControl>
