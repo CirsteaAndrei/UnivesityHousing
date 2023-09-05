@@ -1,0 +1,16 @@
+﻿<Application x:Class="UniversityHousing.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:UniversityHousing"
+             StartupUri="MainWindow.xaml">
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <!-- Merge the external ResourceDictionary into the main resources -->
+                <ResourceDictionary Source="Helpers/DataTemplate.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+
+            <!-- Other resources can be added here if needed -->
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

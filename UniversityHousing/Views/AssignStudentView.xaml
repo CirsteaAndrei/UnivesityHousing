@@ -1,0 +1,21 @@
+﻿<Window x:Class="UniversityHousing.Views.AssignStudentView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:UniversityHousing.Views"
+        mc:Ignorable="d"
+        Title="AssignStudentView" Height="450" Width="800">
+    <StackPanel>
+        <DataGrid Name="unassignedStudentsGrid" AutoGenerateColumns="False" ItemsSource="{Binding UnassignedStudents}">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Student First Name" Binding="{Binding FirstName}"/>
+                <DataGridTextColumn Header="Student Last Name" Binding="{Binding LastName}"/>
+                <DataGridTextColumn Header="Student CNP" Binding="{Binding CNP}"/>
+                <DataGridTextColumn Header="Student Faculty" Binding="{Binding Faculty}"/>
+                <!-- Add other columns as needed -->
+            </DataGrid.Columns>
+        </DataGrid>
+        <Button Content="Assign" Command="{Binding AssignStudentCommand}" CommandParameter="{Binding ElementName=unassignedStudentsGrid, Path=SelectedItem}" />
+    </StackPanel>
+</Window>

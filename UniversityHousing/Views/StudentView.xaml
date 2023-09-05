@@ -1,0 +1,82 @@
+﻿<Window x:Class="UniversityHousing.Views.StudentView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="clr-namespace:UniversityHousing.ViewModels"
+        xmlns:localConverter="clr-namespace:UniversityHousing.Converters"
+        xmlns:local="clr-namespace:UniversityHousing.Views"
+        mc:Ignorable="d"
+        Height="550" Width="800">
+
+    <Window.DataContext>
+        <vm:StudentViewModel />
+    </Window.DataContext>
+
+    <Window.Resources>
+        <!-- ... other resources ... -->
+        <localConverter:FeeStatusToIndexConverter x:Key="feeToIndexConverter" />
+    </Window.Resources>
+    
+    <StackPanel HorizontalAlignment="Center" Margin="0,30,0,0">
+        <StackPanel.Resources>
+            <localConverter:StudentConvert x:Key="studentConvert" />
+        </StackPanel.Resources>
+
+        <WrapPanel HorizontalAlignment="Center">
+            <Button Content="Add" Command="{Binding AddStudentCommand}" Margin="15,0,15,0">
+                <Button.CommandParameter>
+                    <MultiBinding Converter="{StaticResource studentConvert}">
+                        <Binding ElementName="txtFirstName" Path="Text"/>
+                        <Binding ElementName="txtLastName" Path="Text"/>
+                        <Binding ElementName="txtCNP" Path="Text"/>
+                        <Binding ElementName="txtFaculty" Path="Text"/>
+                        <Binding ElementName="feeComboBox" Path="SelectedItem"/>
+                    </MultiBinding>
+                </Button.CommandParameter>
+            </Button>
+            <Button Content="Edit" Command="{Binding EditStudentCommand}" Margin="15,0,15,0"
+                    CommandParameter="{Binding ElementName=studentsGrid, Path=SelectedItem}"/>
+            <Button Content="Delete" Command="{Binding DeleteStudentCommand}" Margin="15,0,15,0"
+                    CommandParameter="{Binding ElementName=studentsGrid, Path=SelectedItem}"/>
+        </WrapPanel>
+
+        <WrapPanel Margin="0,15,0,0">
+            <Label Width="150">First Name:</Label>
+            <TextBox Name="txtFirstName" Width="200" HorizontalAlignment="Left" 
+                     Text ="{Binding ElementName=studentsGrid, Path=SelectedItem.FirstName, UpdateSourceTrigger=PropertyChanged}"/>
+        </WrapPanel>
+        <WrapPanel Margin="0,15,0,0">
+            <Label Width="150">Last Name:</Label>
+            <TextBox Name="txtLastName" Width="200" HorizontalAlignment="Left" 
+                     Text ="{Binding ElementName=studentsGrid, Path=SelectedItem.LastName, UpdateSourceTrigger=PropertyChanged}"/>
+        </WrapPanel>
+        <WrapPanel Margin="0,15,0,0">
+            <Label Width="150">CNP:</Label>
+            <TextBox Name="txtCNP" Width="200" HorizontalAlignment="Left" 
+                     Text ="{Binding ElementName=studentsGrid, Path=SelectedItem.CNP, UpdateSourceTrigger=PropertyChanged}"/>
+        </WrapPanel>
+        <WrapPanel Margin="0,15,0,0">
+            <Label Width="150">Faculty:</Label>
+            <TextBox Name="txtFaculty" Width="200" HorizontalAlignment="Left" 
+                     Text ="{Binding ElementName=studentsGrid, Path=SelectedItem.FirstName, UpdateSourceTrigger=PropertyChanged}"/>
+        </WrapPanel>
+        <WrapPanel Margin="0,15,0,0">
+            <Label Width="150">Fee:</Label>
+            <ComboBox Name="feeComboBox" Width="200"
+                ItemsSource="{Binding FeeStatuses}"
+                SelectedIndex="{Binding ElementName=studentsGrid, Path=SelectedItem.FeeStatus, Converter={StaticResource feeToIndexConverter}}"/>
+        </WrapPanel>
+
+        <DataGrid Name="studentsGrid" Margin="0,15,0,0" AutoGenerateColumns="False" ItemsSource="{Binding StudentsList}">
+            <DataGrid.Columns>
+                <DataGridTextColumn CanUserResize="False" Header="First Name" Binding="{Binding FirstName}"/>
+                <DataGridTextColumn CanUserResize="False" Header="LastName" Binding="{Binding LastName}"/>
+                <DataGridTextColumn CanUserResize="False" Header="CNP" Binding="{Binding CNP}"/>
+                <DataGridTextColumn CanUserResize="False" Header="Faculty" Binding="{Binding Faculty}"/>
+                <DataGridTextColumn CanUserResize="False" Header="Fee" Binding="{Binding FeeStatus}"/>
+                <DataGridTextColumn CanUserResize="False" Header="Room nr" Binding="{Binding RoomId}"/>
+            </DataGrid.Columns>
+        </DataGrid>
+    </StackPanel>
+</Window>

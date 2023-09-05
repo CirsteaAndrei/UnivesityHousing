@@ -1,0 +1,46 @@
+﻿<Window x:Class="UniversityHousing.Views.RoomView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:UniversityHousing.Views"
+        xmlns:localConverter="clr-namespace:UniversityHousing.Converters"
+        mc:Ignorable="d"
+        Title="RoomView" Height="450" Width="800">
+
+    <Window.Resources>
+        <localConverter:StudentNameOrFreeConverter x:Key="StudentNameOrFreeConverter"/>
+    </Window.Resources>
+
+    <StackPanel>
+        <Popup Name="DeassignStudentPopup" IsOpen="{Binding IsDeassignStudentPopupOpen}" Placement="Center" Width="300" Height="150">
+            <Border Background="White" BorderBrush="Black" BorderThickness="1">
+                <StackPanel>
+                    <TextBlock Text="Select student to deassign:" Margin="10" />
+                    <ComboBox ItemsSource="{Binding SelectedRoom.Students}" DisplayMemberPath="LastName" SelectedItem="{Binding SelectedStudent}" Margin="10"/>
+                    <Button Content="OK" Command="{Binding ConfirmDeassignStudentCommand}" Margin="10" />
+                </StackPanel>
+            </Border>
+        </Popup>
+        <WrapPanel HorizontalAlignment="Center">
+            <Button Content="Add" Command="{Binding AddRoomCommand}" Margin="15,0,15,0"/>
+            <Button Content="Delete" Command="{Binding DeleteRoomCommand}" Margin="15,0,15,0"
+                    CommandParameter="{Binding ElementName=roomsGrid, Path=SelectedItem}"/>
+            <Button Content="Assign Student" Command="{Binding OpenAssignStudentViewCommand}" 
+                    CommandParameter="{Binding ElementName=roomsGrid, Path=SelectedItem}" Margin="15,0,15,0"/>
+            <Button Content="Deassign Student" Command="{Binding DeassignStudentCommand}" Margin="15,0,15,0"
+            CommandParameter="{Binding ElementName=roomsGrid, Path=SelectedItem}"/>
+            <Button Content="Refresh" Command="{Binding RefreshRoomsCommand}" Margin="15,0,15,0"/>
+        </WrapPanel>
+        <DataGrid Name="roomsGrid" Margin="0,15,0,0" AutoGenerateColumns="False" ItemsSource="{Binding RoomsList}" 
+                  SelectedItem="{Binding SelectedRoom}">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Room nr." Binding="{Binding Id}"/>
+                <DataGridTextColumn Header="Student 1" Binding="{Binding Students, Converter={StaticResource StudentNameOrFreeConverter}, ConverterParameter=0}"/>
+                <DataGridTextColumn Header="Student 2" Binding="{Binding Students, Converter={StaticResource StudentNameOrFreeConverter}, ConverterParameter=1}"/>
+                <DataGridTextColumn Header="Student 3" Binding="{Binding Students, Converter={StaticResource StudentNameOrFreeConverter}, ConverterParameter=2}"/>
+                <DataGridTextColumn Header="Student 4" Binding="{Binding Students, Converter={StaticResource StudentNameOrFreeConverter}, ConverterParameter=3}"/>
+            </DataGrid.Columns>
+        </DataGrid>
+    </StackPanel>
+</Window>

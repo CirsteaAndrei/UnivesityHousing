@@ -1,0 +1,24 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:vm="clr-namespace:UniversityHousing.ViewModels"
+                    xmlns:view="clr-namespace:UniversityHousing.Views">
+
+
+    <DataTemplate DataType="{x:Type vm:StudentViewModel}">
+        <view:StudentView/>
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type vm:PaymentViewModel}">
+        <view:PaymentView/>
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type vm:PenaltyViewModel}">
+        <view:PenaltyView/>
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type vm:DormitoryViewModel}">
+        <view:DormitoryView/>
+    </DataTemplate>
+
+
+</ResourceDictionary>
