@@ -17,7 +17,7 @@ namespace UniversityHousing.Views
     /// <summary>
     /// Interaction logic for PaymentView.xaml
     /// </summary>
-    public partial class PaymentView : UserControl
+    public partial class PaymentView : Window
     {
         public PaymentView()
         {

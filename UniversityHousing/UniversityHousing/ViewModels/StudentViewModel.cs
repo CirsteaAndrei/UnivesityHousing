@@ -10,103 +10,118 @@ using UniversityHousing.Models.Repositories;
 using UniversityHousing.Models;
 using UniversityHousing.Helpers;
 using System.ComponentModel;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace UniversityHousing.ViewModels
 {
     public class StudentViewModel : ViewModelBase
     {
-        private ObservableCollection<Student> _students;
-        private Student _selectedStudent;
+        private ObservableCollection<Student> studentsList;
+        private readonly UnitOfWork unitOfWork;
         private readonly StudentsRepository _studentsRepository;
+
+        public Array FeeStatuses
+        {
+            get { return Enum.GetValues(typeof(FeeStatus)); }
+        }
 
         public StudentViewModel()
         {
-            _studentsRepository = new StudentsRepository(new AppDbContext());
-            LoadStudents();
+            unitOfWork = ServiceLocator.ServiceProvider.GetService<UnitOfWork>();
+            StudentsList = new ObservableCollection<Student> (unitOfWork.Students.GetAll());
+            AddStudentCommand = new RelayCommand(AddStudent);
+            DeleteStudentCommand = new RelayCommand(DeleteStudent);
+            EditStudentCommand = new RelayCommand(UpdateStudent);
         }
 
-        public ObservableCollection<Student> Students
+        public ObservableCollection<Student> StudentsList
         {
-            get => _students;
+            get => studentsList;
             set
             {
-                _students = value;
-                OnPropertyChanged(nameof(Students));
+                studentsList = value;
+                OnPropertyChanged(nameof(StudentsList));
             }
         }
 
-        public Student SelectedStudent
+        private string errorMessage;
+        public string ErrorMessage
         {
-            get => _selectedStudent;
+            get => errorMessage;
             set
             {
-                _selectedStudent = value;
-                OnPropertyChanged(nameof(SelectedStudent));
+                errorMessage = value;
+                NotifyPropertyChanged("ErrorMessage");
             }
         }
 
-        public ICommand AddStudentCommand => new RelayCommand(AddStudent);
-        public ICommand UpdateStudentCommand => new RelayCommand(UpdateStudent);
-        public ICommand DeleteStudentCommand => new RelayCommand(DeleteStudent);
+        public ICommand AddStudentCommand { get; set; }
 
-        private void LoadStudents()
+        public void AddStudent(Object obj)
         {
-            Students = _studentsRepository.ListToObsCollection(_studentsRepository.GetAll());
+            Student student = obj as Student;
+            if (student != null)
+            {
+                if (string.IsNullOrEmpty(student.FirstName) || string.IsNullOrEmpty(student.LastName))
+                {
+                    ErrorMessage = "The name of the student must be given";
+                }
+                else if (string.IsNullOrEmpty(student.CNP) || string.IsNullOrEmpty(student.Faculty))
+                {
+                    ErrorMessage = "The CNP and faculty must be given";
+                }
+                else
+                {
+                    unitOfWork.Students.Insert(student);
+                    unitOfWork.SaveChanges();
+                    studentsList.Add(student);
+                    ErrorMessage = "";
+                }
+            }
         }
 
-        private void AddStudent(object obj)
+        public ICommand EditStudentCommand { get; set; }
+        public void UpdateStudent(Object obj)
         {
-            // Logic to add a student
-            // You might want to get data from text boxes or other input fields
-            var student = new Student { /* set properties here */ };
-            _studentsRepository.Insert(student);
-            LoadStudents();
+            Student student = obj as Student;
+            if (student == null)
+            {
+                ErrorMessage = "You must select a user";
+            }
+            else if (string.IsNullOrEmpty(student.FirstName) || string.IsNullOrEmpty(student.LastName))
+            {
+                ErrorMessage = "The name of the employee must be given";
+            }
+            else if (string.IsNullOrEmpty(student.CNP) || string.IsNullOrEmpty(student.Faculty))
+            {
+                ErrorMessage = "The CNP and faculty must be given";
+            }
+            else
+            {
+                unitOfWork.Students.Update(student);
+                unitOfWork.SaveChanges();
+                ErrorMessage = "";
+            }
         }
 
-        private void UpdateStudent(object obj)
+        public ICommand DeleteStudentCommand { get; set; }
+        public void DeleteStudent(Object obj)
         {
-            if (SelectedStudent == null) return;
-            _studentsRepository.Update(SelectedStudent);
-            LoadStudents();
+            Student student = obj as Student;
+            if (student == null)
+            {
+                ErrorMessage = "You must select a user";
+            }
+            else
+            {
+                Student u = unitOfWork.Students.GetById(student.Id);
+                unitOfWork.Students.Remove(u);
+                unitOfWork.SaveChanges();
+                studentsList.Remove(student);
+                ErrorMessage = "";
+            }
         }
-
-        private void DeleteStudent(object obj)
-        {
-            if (SelectedStudent == null) return;
-            _studentsRepository.Remove(SelectedStudent);
-            LoadStudents();
-        }
-
-        public Room SelectedRoom { get; set; }
-        public ICommand AssociateRoomCommand => new RelayCommand(AssociateRoom);
-        public ICommand DisassociateRoomCommand => new RelayCommand(DisassociateRoom);
-
-        private void AssociateRoom(object obj)
-        {
-            if (SelectedStudent == null || SelectedRoom == null) return;
-            SelectedStudent.Room = SelectedRoom;
-            _studentsRepository.Update(SelectedStudent);
-            LoadStudents();
-        }
-
-        private void DisassociateRoom(object obj)
-        {
-            if (SelectedStudent == null) return;
-            SelectedStudent.Room = null;
-            _studentsRepository.Update(SelectedStudent);
-            LoadStudents();
-        }
-
-        public ICommand ExpelStudentCommand => new RelayCommand(ExpelStudent);
-
-        private void ExpelStudent(object obj)
-        {
-            if (SelectedStudent == null) return;
-            SelectedStudent.Room = null; // Remove association with room
-                                         // You might also want to set other properties to indicate the student is expelled
-            _studentsRepository.Update(SelectedStudent);
-            LoadStudents();
-        }
-
     }
+
 }
+

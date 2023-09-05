@@ -17,7 +17,7 @@ namespace UniversityHousing.Views
     /// <summary>
     /// Interaction logic for DormitoryView.xaml
     /// </summary>
-    public partial class DormitoryView : UserControl
+    public partial class DormitoryView : Window
     {
         public DormitoryView()
         {

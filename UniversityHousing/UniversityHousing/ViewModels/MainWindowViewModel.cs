@@ -3,28 +3,49 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using UniversityHousing.Helpers;
+using UniversityHousing.Views;
 
 namespace UniversityHousing.ViewModels
 {
     public class MainWindowViewModel : ViewModelBase
     {
-        private ViewModelBase _currentView;
-
-        public ViewModelBase CurrentView
+        private ICommand openWindowCommand;
+        public ICommand OpenWindowCommand
         {
-            get => _currentView;
-            set
+            get
             {
-                _currentView = value;
-                OnPropertyChanged();
+                if (openWindowCommand == null)
+                {
+                    openWindowCommand = new RelayCommand(OpenWindow);
+                }
+                return openWindowCommand;
             }
         }
 
-        public MainWindowViewModel()
+        public void OpenWindow(object obj)
         {
-            // Set the default view when the application starts
-            CurrentView = new StudentViewModel();
+            string nr = obj as string;
+            switch (nr)
+            {
+                case "1":
+                    StudentView student= new StudentView();
+                    student.ShowDialog();
+                    break;
+                case "2":
+                    PaymentView payment = new PaymentView();
+                    payment.ShowDialog();
+                    break;
+                case "3":
+                    DormitoryView dormitory= new DormitoryView();
+                    dormitory.ShowDialog();
+                    break;
+                case "4":
+                    //AnotherPersonView anotherPers = new AnotherPersonView();
+                    //anotherPers.ShowDialog();
+                    break;
+            }
         }
     }
 }

@@ -58,7 +58,7 @@ namespace UniversityHousing.ViewModels
 
         private void LoadPayments()
         {
-            Payments = _paymentsRepository.ListToObsCollection(_paymentsRepository.GetAll());
+            //Payments = _paymentsRepository.ListToObsCollection(_paymentsRepository.GetAll());
         }
 
         private void MakePayment(object obj)

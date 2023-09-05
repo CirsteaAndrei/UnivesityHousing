@@ -17,7 +17,7 @@ namespace UniversityHousing.Views
     /// <summary>
     /// Interaction logic for PenaltyView.xaml
     /// </summary>
-    public partial class PenaltyView : UserControl
+    public partial class PenaltyView : Window
     {
         public PenaltyView()
         {

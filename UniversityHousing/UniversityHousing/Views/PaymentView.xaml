@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="UniversityHousing.Views.PaymentView"
+﻿<Window x:Class="UniversityHousing.Views.PaymentView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -8,9 +8,9 @@
         mc:Ignorable="d"
         Height="550" Width="800">
 
-    <UserControl.DataContext>
+    <Window.DataContext>
         <vm:PaymentViewModel />
-    </UserControl.DataContext>
+    </Window.DataContext>
 
     <Grid>
         <ListView ItemsSource="{Binding Payments}" SelectedItem="{Binding SelectedPayment}">
@@ -30,4 +30,4 @@
             <Button Content="Generate Receipt" Command="{Binding GenerateReceiptCommand}" Width="120" Height="30"/>
         </StackPanel>
     </Grid>
-</UserControl>
+</Window>

@@ -43,7 +43,7 @@ namespace UniversityHousing.Models.Repositories
             _dbSet.Remove(entity);
         }
 
-        public List<T> GetAll()
+        public IEnumerable<T> GetAll()
         {
             return GetRecords().ToList();
         }

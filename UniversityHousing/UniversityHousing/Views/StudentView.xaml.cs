@@ -17,7 +17,7 @@ namespace UniversityHousing.Views
     /// <summary>
     /// Interaction logic for StudentView.xaml
     /// </summary>
-    public partial class StudentView : UserControl
+    public partial class StudentView : Window
     {
         public StudentView()
         {

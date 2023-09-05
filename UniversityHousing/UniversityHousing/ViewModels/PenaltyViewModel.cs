@@ -45,7 +45,7 @@ namespace UniversityHousing.ViewModels
 
         private void LoadPenalties()
         {
-            Penalties = _penaltiesRepository.ListToObsCollection(_penaltiesRepository.GetAll());
+            //Penalties = _penaltiesRepository.ListToObsCollection(_penaltiesRepository.GetAll());
         }
     }
 }
